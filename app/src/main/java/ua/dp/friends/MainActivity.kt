@@ -19,7 +19,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var textView: TextView = findViewById(R.id.tv)
         AsyncTaskHandler(this).execute("https://randomuser.me/api?results=3")
     }
 
@@ -55,27 +54,23 @@ class MainActivity : AppCompatActivity() {
             val jsonObject = JSONObject(jsonString)
             var jsonArray: JSONArray = jsonObject.getJSONArray("results")
 
-
-            val jsonObjectName = JSONObject(jsonArray.toString())
-            var jsonArrayName = jsonObjectName.getJSONArray("name")
-
-            CreatingModelsFromJsonArray(jsonArray, jsonArrayName)
+            CreatingModelsFromJsonArray(jsonArray)
         }
 
-        private fun CreatingModelsFromJsonArray(jsonArray: JSONArray, jsonArrayName: JSONArray) : List<User>{
+        private fun CreatingModelsFromJsonArray(jsonArray: JSONArray) : List<User>{
 
             listModelsUser = ArrayList()
 
 
-            for ( counter in 0 until jsonArray.length()) {
+            for ( index in 0 until jsonArray.length()) {
 
-                var jsonObjectDetail = jsonArray.getJSONObject(counter)
-                var jsonObjectDetailName = jsonArrayName.getJSONObject(counter)
+
+                var jsonObjectDetail = jsonArray.getJSONObject(index)
                 var userModel = User()
 
-                userModel.titleName = jsonObjectDetailName.getString("title")
-                userModel.firstName = jsonObjectDetailName.getString("first")
-                userModel.lastName = jsonObjectDetailName.getString("last")
+                /*userModel.titleName = jsonArrayName.getString("title")
+                userModel.firstName = jsonArrayName.getString("first")
+                userModel.lastName = jsonArrayName.getString("last")*/
 
                 userModel.gender = jsonObjectDetail.getString("gender")
                 userModel.email = jsonObjectDetail.getString("email")
