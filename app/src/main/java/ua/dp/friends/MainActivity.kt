@@ -4,28 +4,33 @@ import android.content.Context
 import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import org.json.JSONArray
 import org.json.JSONObject
+import ua.dp.friends.people.PeopleAdapter
 import java.net.HttpURLConnection
 import java.net.URL
 
 class MainActivity : AppCompatActivity() {
 
+    lateinit var listPeopleRecyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        listPeopleRecyclerView = findViewById(R.id.listPeopleRecyclerView)
+        listPeopleRecyclerView.layoutManager = LinearLayoutManager( MainActivity(), LinearLayoutManager.VERTICAL, true)
 
-        AsyncTaskHandler(this).execute("https://randomuser.me/api?results=3")
+        AsyncTaskHandler(/*listPeopleRecyclerView*/).execute("https://randomuser.me/api?results=3")
+
     }
 
-    class AsyncTaskHandler(conn: Context) : AsyncTask<String, String, String>() {
+    class AsyncTaskHandler(/*recyclerView: RecyclerView*/) : AsyncTask<String, String, String>() {
 
         lateinit var listModelsUser: ArrayList<User>
-        val context = conn
+        //var mListPeopleRecyclerView: RecyclerView = recyclerView
 
         override fun doInBackground(vararg url: String?): String {
             var jsonString: String
@@ -38,7 +43,8 @@ class MainActivity : AppCompatActivity() {
                             reader -> reader.readText()
                     }
                 }
-            } finally {
+            }
+            finally {
                 connection.disconnect()
             }
             return jsonString
@@ -48,29 +54,28 @@ class MainActivity : AppCompatActivity() {
             super.onPostExecute(result)
 
             CreateJsonArray(result)
+            //mListPeopleRecyclerView.adapter = PeopleAdapter(CreatingModelsFromJsonArray(CreateJsonArray(result)))
         }
 
-        private fun CreateJsonArray(jsonString: String?) {
+        private fun CreateJsonArray(jsonString: String?): JSONArray {
             val jsonObject = JSONObject(jsonString)
             var jsonArray: JSONArray = jsonObject.getJSONArray("results")
-
-            CreatingModelsFromJsonArray(jsonArray)
+            return jsonArray
         }
 
         private fun CreatingModelsFromJsonArray(jsonArray: JSONArray) : List<User>{
 
             listModelsUser = ArrayList()
 
-
             for ( index in 0 until jsonArray.length()) {
 
-
                 var jsonObjectDetail = jsonArray.getJSONObject(index)
+                var jsonObjectName = jsonArray.getJSONObject(index).getJSONObject("name")
                 var userModel = User()
 
-                /*userModel.titleName = jsonArrayName.getString("title")
-                userModel.firstName = jsonArrayName.getString("first")
-                userModel.lastName = jsonArrayName.getString("last")*/
+                userModel.titleName = jsonObjectName.getString("title")
+                userModel.firstName = jsonObjectName.getString("first")
+                userModel.lastName = jsonObjectName.getString("last")
 
                 userModel.gender = jsonObjectDetail.getString("gender")
                 userModel.email = jsonObjectDetail.getString("email")

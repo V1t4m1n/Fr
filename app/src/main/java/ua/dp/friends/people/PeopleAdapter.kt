@@ -1,6 +1,5 @@
 package ua.dp.friends.people
 
-import android.annotation.SuppressLint
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ua.dp.friends.R
 import ua.dp.friends.User
-import java.net.URI
 
 class PeopleAdapter (private val value: List<User>) : RecyclerView.Adapter<PeopleAdapter.PeopleViewHolder>() {
 
@@ -21,7 +19,7 @@ class PeopleAdapter (private val value: List<User>) : RecyclerView.Adapter<Peopl
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_recycler_view, parent, false)
         return PeopleViewHolder(itemView)
     }
-    
+
     override fun onBindViewHolder(holder: PeopleViewHolder, position: Int) {
         holder.avatarImageView.setImageURI(Uri.parse(value[position].avatar))
         holder.nameTextView.text = value[position].titleName +
