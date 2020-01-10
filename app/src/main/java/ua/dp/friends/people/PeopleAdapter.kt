@@ -1,17 +1,21 @@
 package ua.dp.friends.people
 
-import android.net.Uri
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import ua.dp.friends.R
-import ua.dp.friends.User
+import ua.dp.friends.details.DetailActivity
+import ua.dp.friends.utils.User
 
-class PeopleAdapter (private val value: List<User>) : RecyclerView.Adapter<PeopleAdapter.PeopleViewHolder>() {
+class PeopleAdapter (private val value: List<User>, context: Context) : RecyclerView.Adapter<PeopleAdapter.PeopleViewHolder>(){
 
+    var conn = context
 
     override fun getItemCount() = value.size
 
@@ -21,30 +25,36 @@ class PeopleAdapter (private val value: List<User>) : RecyclerView.Adapter<Peopl
     }
 
     override fun onBindViewHolder(holder: PeopleViewHolder, position: Int) {
-        holder.avatarImageView.setImageURI(Uri.parse(value[position].avatar))
+        //Set picture in ImageView
+        Picasso.get().load(value[position].medium).into(holder.avatarImageView)
+
         holder.nameTextView.text = value[position].titleName +
                 ". " + value[position].firstName + " " + value[position].lastName
-        holder.ageTextView.text = value[position].age
-        holder.cityTextView.text = value[position].city
-        holder.countryTextView.text = value[position].country
+        //holder.ageTextView.text = value[position].age
+        //holder.cityTextView.text = value[position].city
+        //holder.countryTextView.text = value[position].country
         holder.phoneTextView.text = value[position].phone
+        holder.genderTextView.text = value[position].gender
     }
 
     class PeopleViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
         var avatarImageView: ImageView
         var nameTextView: TextView
         var cityTextView: TextView
-        var countryTextView: TextView
-        var ageTextView: TextView
+        //var countryTextView: TextView
+        //var ageTextView: TextView
         var phoneTextView: TextView
+        var genderTextView: TextView
 
         init {
             avatarImageView = itemView.findViewById(R.id.avatarImageView)
             nameTextView = itemView.findViewById(R.id.nameTextView)
             cityTextView = itemView.findViewById(R.id.cityTextView)
-            countryTextView = itemView.findViewById(R.id.countryTextView)
-            ageTextView = itemView.findViewById(R.id.ageTextView)
+            //countryTextView = itemView.findViewById(R.id.countryTextView)
+            //ageTextView = itemView.findViewById(R.id.ageTextView)
             phoneTextView = itemView.findViewById(R.id.numberTextView)
+            genderTextView = itemView.findViewById(R.id.genderTextView)
+
         }
     }
 }
