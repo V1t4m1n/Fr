@@ -26,7 +26,7 @@ class PeopleAdapter (private val value: List<User>, context: Context) : Recycler
 
     override fun onBindViewHolder(holder: PeopleViewHolder, position: Int) {
         //Set picture in ImageView
-        Picasso.get().load(value[position].medium).into(holder.avatarImageView)
+        Picasso.get().load(value[position].large).into(holder.avatarImageView)
 
         holder.nameTextView.text = value[position].titleName +
                 ". " + value[position].firstName + " " + value[position].lastName
@@ -35,6 +35,9 @@ class PeopleAdapter (private val value: List<User>, context: Context) : Recycler
         //holder.countryTextView.text = value[position].country
         holder.phoneTextView.text = value[position].phone
         holder.genderTextView.text = value[position].gender
+
+        //DetailActivity(value)
+        //conn.startActivity(Intent(conn, DetailActivity::class.java).putExtra("POSITION", position))
     }
 
     class PeopleViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
