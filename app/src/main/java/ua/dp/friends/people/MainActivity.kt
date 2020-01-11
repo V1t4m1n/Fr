@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         listPeopleRecyclerView = findViewById(R.id.listPeopleRecyclerView)
         listPeopleRecyclerView.layoutManager = LinearLayoutManager(MainActivity(), LinearLayoutManager.VERTICAL, false)
-        
+
         AsyncTaskHandler(listPeopleRecyclerView, this)
             .execute("https://randomuser.me/api?results=10")
 
@@ -83,7 +83,6 @@ class MainActivity : AppCompatActivity() {
 
                 //userModel.city =
                 //userModel.country = jsonObjectDetail.getString("country")
-                userModel.position = index
 
                 userModel.titleName = jsonObjectName.getString("title")
                 userModel.firstName = jsonObjectName.getString("first")
@@ -97,11 +96,9 @@ class MainActivity : AppCompatActivity() {
                 userModel.email = jsonObjectDetail.getString("email")
                 userModel.phone = jsonObjectDetail.getString("phone")
 
-
                 listModelsUser.add(userModel)
             }
-            Log.d("SIZE LIST", "${listModelsUser.size}")
-            //Give list to adapter...
+
             return listModelsUser
         }
     }

@@ -2,7 +2,6 @@ package ua.dp.friends.people
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,9 +36,6 @@ class PeopleAdapter (val value: List<User>, context: Context) : RecyclerView.Ada
         //holder.countryTextView.text = value[position].country
         holder.phoneTextView.text = value[position].phone
         holder.genderTextView.text = value[position].gender
-
-        //DetailActivity(value)
-        //conn.startActivity(Intent(conn, DetailActivity::class.java).putExtra("POSITION", position))
     }
 
     class PeopleViewHolder (itemView: View, conn: Context, listPeople: List<User>) : RecyclerView.ViewHolder(itemView) {
