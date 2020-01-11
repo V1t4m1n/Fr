@@ -1,19 +1,16 @@
 package ua.dp.friends.details
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_recycler_view.*
 import ua.dp.friends.R
-import ua.dp.friends.utils.User
 
-class DetailActivity(private val value: List<User>) : AppCompatActivity() {
 
-    private var pos = intent.getIntExtra("POSITION", 0)
+class DetailActivity: AppCompatActivity() {
 
     private lateinit var avatarImageView: ImageView
+    private lateinit var addedSwitch: Switch
     private lateinit var nameTextView: TextView
     //private lateinit var cityTextView: TextView
     //var countryTextView: TextView
@@ -21,9 +18,11 @@ class DetailActivity(private val value: List<User>) : AppCompatActivity() {
     private lateinit var phoneTextView: TextView
     private lateinit var genderTextView: TextView
 
+    var added: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.item_recycler_view)
+        setContentView(R.layout.activity_detail)
 
         avatarImageView = findViewById(R.id.avatarImageView)
         nameTextView = findViewById(R.id.nameTextView)
@@ -32,18 +31,21 @@ class DetailActivity(private val value: List<User>) : AppCompatActivity() {
         //ageTextView = itemView.findViewById(R.id.ageTextView)
         phoneTextView = findViewById(R.id.numberTextView)
         genderTextView = findViewById(R.id.genderTextView)
+        addedSwitch = findViewById(R.id.addedSwitch)
 
-        InitAllView(value, pos)
-    }
 
-    fun InitAllView(user: List<User>, pos: Int) {
+        Picasso.get().load(intent.getStringExtra("AVATAR")).into(avatarImageView)
+        nameTextView.text = intent.getStringExtra("NAME")
+        phoneTextView.text = intent.getStringExtra("PHONE")
+        genderTextView.text = intent.getStringExtra("GENDER")
 
-        Picasso.get().load(user[pos].medium).into(avatarImageView)
-
-        nameTextView.text = user[pos].titleName +
-                ". " + user[pos].firstName + " " + user[pos].lastName
-
-        phoneTextView.text = user[pos].phone
-        genderTextView.text = user[pos].gender
+        addedSwitch.setOnCheckedChangeListener { _, _ ->
+            added = !added
+            if (added) {
+                Toast.makeText(this, "Added to friend list!", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this, "Remove when friend list!", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 }

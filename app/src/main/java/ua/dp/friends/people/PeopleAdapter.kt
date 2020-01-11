@@ -2,6 +2,7 @@ package ua.dp.friends.people
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,15 +14,16 @@ import ua.dp.friends.R
 import ua.dp.friends.details.DetailActivity
 import ua.dp.friends.utils.User
 
-class PeopleAdapter (private val value: List<User>, context: Context) : RecyclerView.Adapter<PeopleAdapter.PeopleViewHolder>(){
+class PeopleAdapter (val value: List<User>, context: Context) : RecyclerView.Adapter<PeopleAdapter.PeopleViewHolder>(){
 
+    var mValue: List<User> = value
     var conn = context
 
     override fun getItemCount() = value.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PeopleViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_recycler_view, parent, false)
-        return PeopleViewHolder(itemView)
+        return PeopleViewHolder(itemView, conn, value)
     }
 
     override fun onBindViewHolder(holder: PeopleViewHolder, position: Int) {
@@ -40,7 +42,7 @@ class PeopleAdapter (private val value: List<User>, context: Context) : Recycler
         //conn.startActivity(Intent(conn, DetailActivity::class.java).putExtra("POSITION", position))
     }
 
-    class PeopleViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class PeopleViewHolder (itemView: View, conn: Context, listPeople: List<User>) : RecyclerView.ViewHolder(itemView) {
         var avatarImageView: ImageView
         var nameTextView: TextView
         var cityTextView: TextView
@@ -58,6 +60,16 @@ class PeopleAdapter (private val value: List<User>, context: Context) : Recycler
             phoneTextView = itemView.findViewById(R.id.numberTextView)
             genderTextView = itemView.findViewById(R.id.genderTextView)
 
+            itemView.setOnClickListener{
+                var intent = Intent(conn, DetailActivity::class.java)
+                intent.putExtra("NAME", listPeople[adapterPosition].titleName +
+                        ". " + listPeople[adapterPosition].firstName + " " + listPeople[adapterPosition].lastName)
+
+                intent.putExtra("PHONE", listPeople[adapterPosition].phone)
+                intent.putExtra("GENDER", listPeople[adapterPosition].gender)
+                intent.putExtra("AVATAR", listPeople[adapterPosition].large)
+                conn.startActivity(intent)
+            }
         }
     }
 }

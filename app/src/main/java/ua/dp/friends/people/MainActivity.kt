@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,9 +25,22 @@ class MainActivity : AppCompatActivity() {
         listPeopleRecyclerView = findViewById(R.id.listPeopleRecyclerView)
         listPeopleRecyclerView.layoutManager = LinearLayoutManager(MainActivity(), LinearLayoutManager.VERTICAL, false)
 
+//        listPeopleRecyclerView.setOnItemClickListener {
+//            //Toast.makeText(this, "")
+//        }
+
         AsyncTaskHandler(listPeopleRecyclerView, this)
             .execute("https://randomuser.me/api?results=10")
 
+    }
+
+    inline fun RecyclerView.setOnItemClickListener(crossinline listener: (position: Int) -> Unit) {
+        addOnItemTouchListener(RecyclerItemClickListener(this,
+            object : RecyclerItemClickListener.OnItemClickListener {
+                override fun onItemClick(view: View, position: Int) {
+                    listener(position)
+                }
+            }))
     }
 
     class AsyncTaskHandler(recyclerView: RecyclerView, context: Context) : AsyncTask<String, String, String>() {
