@@ -64,6 +64,11 @@ class PeopleAdapter (val value: List<User>, context: Context) : RecyclerView.Ada
                 intent.putExtra("PHONE", listPeople[adapterPosition].phone)
                 intent.putExtra("GENDER", listPeople[adapterPosition].gender)
                 intent.putExtra("AVATAR", listPeople[adapterPosition].large)
+
+                intent.putExtra("TITLE", listPeople[adapterPosition].titleName)
+                intent.putExtra("FIRST", listPeople[adapterPosition].firstName)
+                intent.putExtra("LAST", listPeople[adapterPosition].lastName)
+
                 conn.startActivity(intent)
             }
         }

@@ -3,15 +3,13 @@ package ua.dp.friends.people
 import android.content.Context
 import android.os.AsyncTask
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.json.JSONArray
 import org.json.JSONObject
 import ua.dp.friends.R
+import ua.dp.friends.db.DBHelper
 import ua.dp.friends.utils.User
 import java.net.HttpURLConnection
 import java.net.URL
@@ -19,16 +17,19 @@ import java.net.URL
 class MainActivity : AppCompatActivity() {
 
     lateinit var listPeopleRecyclerView: RecyclerView
+    lateinit var db: DBHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        db = DBHelper(this)
+
         listPeopleRecyclerView = findViewById(R.id.listPeopleRecyclerView)
         listPeopleRecyclerView.layoutManager = LinearLayoutManager(MainActivity(), LinearLayoutManager.VERTICAL, false)
 
         AsyncTaskHandler(listPeopleRecyclerView, this)
             .execute("https://randomuser.me/api?results=10")
-
     }
 
     class AsyncTaskHandler(recyclerView: RecyclerView, context: Context) : AsyncTask<String, String, String>() {
