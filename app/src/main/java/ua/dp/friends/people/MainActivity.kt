@@ -1,9 +1,14 @@
 package ua.dp.friends.people
 
+import android.R.id.home
+import android.app.PendingIntent.getActivity
 import android.content.Context
 import android.os.AsyncTask
 import android.os.Bundle
+import android.view.MenuItem
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.json.JSONArray
@@ -14,16 +19,18 @@ import ua.dp.friends.utils.User
 import java.net.HttpURLConnection
 import java.net.URL
 
+
 class MainActivity : AppCompatActivity() {
 
     lateinit var listPeopleRecyclerView: RecyclerView
-    lateinit var db: DBHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        db = DBHelper(this)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
 
         listPeopleRecyclerView = findViewById(R.id.listPeopleRecyclerView)
         listPeopleRecyclerView.layoutManager = LinearLayoutManager(MainActivity(), LinearLayoutManager.VERTICAL, false)
@@ -102,5 +109,20 @@ class MainActivity : AppCompatActivity() {
 
             return listModelsUser
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        var id = item.itemId
+
+        if (id == home) {
+            this.finish()
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
